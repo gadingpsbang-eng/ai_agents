@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebTuntas AI — Satu AI, Tuntaskan Semua.</title>
+  <meta name="description" content="Asisten cerdas untuk ide, coding, dan produktivitas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+  <!-- CSS Kustom Anda -->
+  <link rel="stylesheet" href="css/style.css" />
+  
+  <script>
+    // Terapkan tema tersimpan sebelum paint agar tidak berkedip
+    try {
+      var t = localStorage.getItem("wt_theme");
+      if (t) document.documentElement.setAttribute("data-theme", JSON.parse(t));
+    } catch (e) { /* abaikan */ }
+  </script>
+</head>
+<body>
+  <a class="skip-link visually-hidden-focusable" href="#user-input">Lewati ke kolom input</a>
+
+  <div class="app-shell">
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar" id="sidebar" aria-label="Menu utama">
+      <div class="sidebar-top">
+        <div class="brand">
+          <div class="brand-logo" aria-hidden="true"><i data-lucide="sparkles"></i></div>
+          <div class="brand-text">
+            <strong>WebTuntas AI</strong>
+            <span>Satu AI, Tuntaskan Semua.</span>
+          </div>
+        </div>
+        <button class="icon-btn sidebar-close" id="sidebar-close" aria-label="Tutup menu">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <button class="btn btn-primary new-chat-btn" id="new-chat-btn">
+        <i data-lucide="square-pen"></i>
+        <span>Chat Baru</span>
+      </button>
+
+      <nav class="side-nav" aria-label="Navigasi sidebar">
+        <button class="nav-item is-active" data-action="chat">
+          <i data-lucide="message-square"></i><span>Chat AI</span>
+        </button>
+        <button class="nav-item" data-action="history">
+          <i data-lucide="history"></i><span>Riwayat Chat</span>
+        </button>
+        <button class="nav-item" data-action="prompts">
+          <i data-lucide="book-open"></i><span>Prompt Library</span>
+        </button>
+        <button class="nav-item" data-action="settings">
+          <i data-lucide="settings"></i><span>Pengaturan</span>
+        </button>
+      </nav>
+
+      <section class="history-panel" aria-label="Riwayat chat">
+        <div class="history-search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input type="search" id="history-search" class="form-control form-control-sm" placeholder="Cari riwayat..." aria-label="Cari riwayat chat" />
+        </div>
+        <div class="history-list" id="history-list" role="list"></div>
+      </section>
+
+      <footer class="sidebar-footer">
+        <div class="profile">
+          <div class="avatar" id="profile-avatar" aria-hidden="true">P</div>
+          <div class="profile-info">
+            <strong id="profile-name">Pengguna</strong>
+            <span class="status"><span class="status-dot" aria-hidden="true"></span> Siap digunakan</span>
+          </div>
+        </div>
+      </footer>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay" hidden></div>
+
+    <!-- ==================== MAIN ==================== -->
+    <div class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menu-btn" aria-label="Buka menu" aria-controls="sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+
+        <div class="topbar-title">
+          <strong>WebTuntas AI</strong>
+          <span class="badge bg-secondary">AI Assistant</span>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-btn" id="delete-chat-btn" aria-label="Hapus percakapan ini" hidden>
+            <i data-lucide="trash-2"></i>
+          </button>
+          <button class="icon-btn" id="theme-btn" aria-label="Ganti tema gelap/terang">
+            <i data-lucide="moon"></i>
+          </button>
+          <div class="avatar avatar-sm" id="header-avatar" title="Avatar pengguna" aria-hidden="true">P</div>
+        </div>
+      </header>
+
+      <!-- Halaman sambutan -->
+      <section class="welcome" id="welcome-screen" aria-labelledby="welcome-title">
+        <div class="ai-orb" aria-hidden="true"><i data-lucide="bot"></i></div>
+        <h1 id="welcome-title">Halo! Ada yang bisa WebTuntas bantu?</h1>
+        <p class="welcome-sub">
+          Mulai ide baru, selesaikan pekerjaan, dan kembangkan kreativitasmu bersama WebTuntas.
+        </p>
+
+        <div class="prompt-cards">
+          <button class="prompt-card" data-prompt="Rancang website bisnis modern dan responsif.">
+            <span class="card-icon" aria-hidden="true"><i data-lucide="layout-template"></i></span>
+            <strong>Buat Website</strong>
+            <span class="card-desc">Rancang website bisnis modern dan responsif.</span>
+          </button>
+          <button class="prompt-card" data-prompt="Pelajari kode, perbaiki bug, dan temukan solusi.">
+            <span class="card-icon" aria-hidden="true"><i data-lucide="code-2"></i></span>
+            <strong>Bantu Coding</strong>
+            <span class="card-desc">Pelajari kode, perbaiki bug, dan temukan solusi.</span>
+          </button>
+          <button class="prompt-card" data-prompt="Temukan ide konten dan strategi bisnis.">
+            <span class="card-icon" aria-hidden="true"><i data-lucide="lightbulb"></i></span>
+            <strong>Ide Kreatif</strong>
+            <span class="card-desc">Temukan ide konten dan strategi bisnis.</span>
+          </button>
+          <button class="prompt-card" data-prompt="Pelajari pemrograman dengan penjelasan sederhana.">
+            <span class="card-icon" aria-hidden="true"><i data-lucide="graduation-cap"></i></span>
+            <strong>Belajar Teknologi</strong>
+            <span class="card-desc">Pelajari pemrograman dengan penjelasan sederhana.</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Tampilan percakapan -->
+      <section class="chat-view" id="chat-view" hidden aria-label="Percakapan">
+        <div class="messages" id="messages" aria-live="polite"></div>
+      </section>
+
+      <!-- Kolom input -->
+      <footer class="composer">
+        <div class="composer-box">
+          <button class="icon-btn attach-btn" id="attach-btn" aria-label="Tambahkan lampiran">
+            <i data-lucide="plus"></i>
+          </button>
+          <textarea
+            id="user-input"
+            class="form-control"
+            rows="1"
+            placeholder="Tulis pertanyaan atau tugasmu di sini..."
+            aria-label="Pesan untuk WebTuntas AI"
+          ></textarea>
+          <button class="send-btn" id="send-btn" aria-label="Kirim pesan">
+            <i data-lucide="arrow-up"></i>
+          </button>
+        </div>
+        <p class="composer-hint">WebTuntas AI — Workspace produktivitasmu.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL PENGATURAN ==================== -->
+  <div class="modal-backdrop" id="settings-modal" hidden>
+    <div class="modal show d-block" role="dialog" aria-modal="true" aria-labelledby="settings-title" style="background: rgba(0,0,0,0.5);">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <header class="modal-header">
+            <h2 class="modal-title fs-5" id="settings-title">Pengaturan</h2>
+            <button type="button" class="btn-close" data-close="settings-modal" aria-label="Tutup pengaturan"></button>
+          </header>
+          <div class="modal-body">
+            <div class="field mb-3">
+              <label for="setting-name" class="form-label">Nama tampilan</label>
+              <input type="text" id="setting-name" class="form-control" maxlength="24" placeholder="Nama kamu" autocomplete="off" />
+            </div>
+            <div class="field mb-3">
+              <span class="field-label d-block mb-2">Tema tampilan</span>
+              <div class="seg btn-group w-100" role="group" aria-label="Pilih tema">
+                <button type="button" class="seg-btn btn btn-outline-secondary" id="set-dark">Gelap</button>
+                <button type="button" class="seg-btn btn btn-outline-secondary" id="set-light">Terang</button>
+              </div>
+            </div>
+            <div class="field">
+              <span class="field-label d-block mb-2">Data</span>
+              <button type="button" class="btn btn-danger w-100" id="clear-data-btn">
+                <i data-lucide="trash-2"></i><span>Hapus semua data</span>
+              </button>
+              <p class="field-hint form-text">Riwayat dan preferensi hanya disimpan di browser ini.</p>
+            </div>
+          </div>
+          <footer class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close="settings-modal">Batal</button>
+            <button type="button" class="btn btn-primary" id="save-settings">Simpan</button>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL PROMPT LIBRARY ==================== -->
+  <div class="modal-backdrop" id="prompt-modal" hidden>
+    <div class="modal show d-block modal-lg" role="dialog" aria-modal="true" aria-labelledby="prompt-title" style="background: rgba(0,0,0,0.5);">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <header class="modal-header">
+            <h2 class="modal-title fs-5" id="prompt-title">Prompt Library</h2>
+            <button type="button" class="btn-close" data-close="prompt-modal" aria-label="Tutup prompt library"></button>
+          </header>
+          <div class="modal-body">
+            <p class="field-hint text-muted">Pilih prompt untuk langsung mengisi kolom input.</p>
+            <div class="prompt-grid" id="prompt-grid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stack notifikasi toast -->
+  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "ai-agent-nodejs",
+  "version": "1.0.0",
+  "description": "AI Agent with tools, memory, and planner architecture",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test \"tests/**/*.test.js\""
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "llm",
+    "tools"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.20.0",
+    "dotenv": "^16.6.1",
+    "express": "^5.3.0",
+    "openai": "^7.38.0"
+  }
+}
